@@ -3,40 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment, useEffect, useId, useState } from "react";
+import { Fragment, useEffect, useId } from "react";
 import { BookNowButton } from "@/components/ui/BookNowButton";
 import { useMenu } from "@/components/layout/MenuContext";
-import { findVisible } from "@/lib/dom";
 import { SITE } from "@/lib/config";
 import { NavDropdown } from "@/components/layout/NavDropdown";
 import { NAV_ITEMS, NAV_MENUS } from "@/lib/data/navigation";
-
-/** Header turns white once the hero has been scrolled past. */
-function useScrolledPastHero() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const update = () => {
-      const hero = findVisible(".hero");
-      setScrolled(window.scrollY > (hero ? hero.offsetHeight - 120 : 8));
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-
-  return scrolled;
-}
 
 /** Shared header + mobile sheet for every page. Active link follows the current route. */
 export function Navbar() {
   const { menuOpen, setMenuOpen } = useMenu();
   const pathname = usePathname();
   const sheetId = useId();
-  const pastHero = useScrolledPastHero();
-  const isHome = pathname === "/";
-  // Sub-pages open with a navy breadcrumb bar, so their header is always the solid style.
-  const solid = pastHero || !isHome;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -47,7 +25,8 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen, setMenuOpen]);
 
-  const headerClass = ["nav", solid && "scrolled", menuOpen && "open"].filter(Boolean).join(" ");
+  // Every page uses the same solid white header (as on the location and other sub-pages).
+  const headerClass = ["nav", "scrolled", menuOpen && "open"].filter(Boolean).join(" ");
   const items = NAV_ITEMS;
   const ariaCurrent = (href?: string) => (href && href === pathname ? "page" : undefined);
 
