@@ -9,7 +9,11 @@ const TRUST_CHIPS = [
   "Not done right? We come back",
 ];
 
-export function BookingSection() {
+export function BookingSection({
+  showTrustChips = true,
+}: {
+  showTrustChips?: boolean;
+}) {
   return (
     <section className="band alt" id="book" aria-labelledby="h-book">
       <div className="wrap book-one">
@@ -20,16 +24,19 @@ export function BookingSection() {
           small
           title={
             <>
-              Book online in 60 seconds. <span className="mute">No calls needed.</span>
+              Book online in 60 seconds.{" "}
+              <span className="mute">No calls needed.</span>
             </>
           }
         />
         <BookingWidget />
-        <ul className="trustchips" aria-label="Trust">
-          {TRUST_CHIPS.map((chip) => (
-            <li key={chip}>{chip}</li>
-          ))}
-        </ul>
+        {showTrustChips && (
+          <ul className="trustchips" aria-label="Trust">
+            {TRUST_CHIPS.map((chip) => (
+              <li key={chip}>{chip}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );

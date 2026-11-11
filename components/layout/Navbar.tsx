@@ -1,11 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Fragment, useEffect, useId, useState } from "react";
 import { BookNowButton } from "@/components/ui/BookNowButton";
 import { useMenu } from "@/components/layout/MenuContext";
+import { findVisible } from "@/lib/dom";
 import { SITE } from "@/lib/config";
-import { NAV_LINKS } from "@/lib/data/navigation";
+import { NavDropdown } from "@/components/layout/NavDropdown";
+import { NAV_ITEMS, NAV_MENUS } from "@/lib/data/navigation";
 
 /** Header turns white once the hero has been scrolled past. */
 function useScrolledPastHero() {
@@ -13,7 +17,7 @@ function useScrolledPastHero() {
 
   useEffect(() => {
     const update = () => {
-      const hero = document.querySelector<HTMLElement>(".hero");
+      const hero = findVisible(".hero");
       setScrolled(window.scrollY > (hero ? hero.offsetHeight - 120 : 8));
     };
     update();
@@ -24,9 +28,15 @@ function useScrolledPastHero() {
   return scrolled;
 }
 
+/** Shared header + mobile sheet for every page. Active link follows the current route. */
 export function Navbar() {
   const { menuOpen, setMenuOpen } = useMenu();
-  const scrolled = useScrolledPastHero();
+  const pathname = usePathname();
+  const sheetId = useId();
+  const pastHero = useScrolledPastHero();
+  const isHome = pathname === "/";
+  // Sub-pages open with a navy breadcrumb bar, so their header is always the solid style.
+  const solid = pastHero || !isHome;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -37,24 +47,32 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen, setMenuOpen]);
 
-  const headerClass = ["nav", scrolled && "scrolled", menuOpen && "open"].filter(Boolean).join(" ");
+  const headerClass = ["nav", solid && "scrolled", menuOpen && "open"].filter(Boolean).join(" ");
+  const items = NAV_ITEMS;
+  const ariaCurrent = (href?: string) => (href && href === pathname ? "page" : undefined);
 
   return (
     <>
-      <header className={headerClass} id="nav">
+      <header className={headerClass}>
         <div className="wrap">
-          <a className="logo" href="#top" aria-label="FortlyPro home">
+          <Link className="logo" href="/" aria-label="FortlyPro home">
             <span className="wordmark" aria-hidden="true">
               Fortly<b>Pro</b>
             </span>
             <Image src="/images/asset-1.png" alt="FortlyPro" width={95} height={21} priority />
-          </a>
+          </Link>
           <ul>
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a href={link.href}>{link.label}</a>
-              </li>
-            ))}
+            {items.map((item) =>
+              item.menu ? (
+                <NavDropdown key={item.label} {...NAV_MENUS[item.menu]} />
+              ) : (
+                <li key={item.label}>
+                  <Link href={item.href ?? "/"} aria-current={ariaCurrent(item.href)}>
+                    {item.label}
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
           <div className="right">
             <a className="tel" href={SITE.phoneHref}>
@@ -66,7 +84,7 @@ export function Navbar() {
               type="button"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
-              aria-controls="sheet"
+              aria-controls={sheetId}
               onClick={() => setMenuOpen(!menuOpen)}
             >
               <i>
@@ -77,11 +95,37 @@ export function Navbar() {
           </div>
         </div>
       </header>
-      <nav className="sheet" id="sheet" aria-label="Mobile">
-        {NAV_LINKS.map((link) => (
-          <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>
-            {link.label}
-          </a>
+      <nav className="sheet" id={sheetId} aria-label="Mobile">
+        {items.map((item) => (
+          <Fragment key={item.label}>
+            {item.href ? (
+              <Link
+                href={item.href}
+                aria-current={ariaCurrent(item.href)}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <p className="sheet-label">{item.label}</p>
+            )}
+            {item.menu &&
+              NAV_MENUS[item.menu].groups.map((group, index) => (
+                <div className="sheet-group" key={group.label ?? index}>
+                  {group.label && <p>{group.label}</p>}
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      aria-current={ariaCurrent(link.href)}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              ))}
+          </Fragment>
         ))}
         <div className="tel-row">
           <span>{SITE.mobileHours}</span>

@@ -1,4 +1,4 @@
-import type { FaqGroup } from "@/types";
+import type { FaqGroup, FaqItem } from "@/types";
 
 export const FAQ_GROUPS: FaqGroup[] = [
   {
@@ -128,7 +128,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
           "We serve the greater Austin area: Central Austin, Northwest Austin, Cedar Park, Round Rock and more.",
         link: {
           text: "See the map",
-          href: "#areas",
+          href: "/#areas",
           after:
             " or enter your zip to confirm instantly; a few neighborhoods are still on the waitlist.",
         },
@@ -141,3 +141,33 @@ export const FAQ_GROUPS: FaqGroup[] = [
     ],
   },
 ];
+
+/** The pricing page shows only the groups relevant to buying decisions. */
+export const PRICING_FAQ_GROUPS: FaqGroup[] = FAQ_GROUPS.filter((group) =>
+  ["Before you book", "Day of"].includes(group.label),
+);
+
+/** Questions that only appear on a single appliance page. */
+const APPLIANCE_ONLY_FAQ: FaqItem[] = [
+  {
+    question: "Do you clean the drain line?",
+    answer:
+      "No. We purify the splash guard and the grinding chamber, which is where the smell lives. The drain line and plumbing are a different service.",
+  },
+];
+
+const FAQ_LOOKUP = new Map(
+  [...FAQ_GROUPS.flatMap((group) => group.items), ...APPLIANCE_ONLY_FAQ].map((item) => [
+    item.question,
+    item,
+  ]),
+);
+
+/** Builds one FAQ group from question texts, keeping the given order. */
+export function pickFaqItems(questions: string[]): FaqItem[] {
+  return questions.map((question) => {
+    const item = FAQ_LOOKUP.get(question);
+    if (!item) throw new Error(`Unknown FAQ question: ${question}`);
+    return item;
+  });
+}

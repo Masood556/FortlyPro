@@ -1,5 +1,10 @@
 import type { ApplianceId, ApplianceInfo } from "@/types";
 
+/** URL prefix of the appliance service pages, e.g. /application/dryer-cleaning-austin. */
+export const APPLIANCE_ROUTE_BASE = "/application";
+
+export const appliancePath = (slug: string) => `${APPLIANCE_ROUTE_BASE}/${slug}`;
+
 export const APPLIANCE_ORDER: ApplianceId[] = ["washer", "dryer", "dishwasher", "disposal"];
 
 export const APPLIANCE_NAMES: Record<ApplianceId, string> = {

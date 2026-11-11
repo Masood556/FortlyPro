@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { PlanCard } from "@/components/sections/pricing/PlanCard";
 import { BundleButton } from "@/components/sections/pricing/BundleButton";
 import { ComingSoonRow } from "@/components/sections/pricing/ComingSoonRow";
@@ -6,26 +7,70 @@ import { TrustStrip } from "@/components/sections/pricing/TrustStrip";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PRICES, SITE, formatPrice } from "@/lib/config";
 
-export function PricingSection() {
+export interface PricingHeaderContent {
+  eyebrow: string;
+  eyebrowLong?: string;
+  title: ReactNode;
+  lede: ReactNode;
+}
+
+const HOME_PRICING_HEADER: PricingHeaderContent = {
+  eyebrow: "Pricing",
+  eyebrowLong: " · Appliance deep cleaning, Austin, TX",
+  title: (
+    <>
+      Simple, bundled pricing. <span className="chip-lime">from {formatPrice(PRICES.starter)}</span>
+    </>
+  ),
+  lede: (
+    <>
+      Replacing a washer runs {SITE.replacementCost}. Purifying it starts at{" "}
+      {formatPrice(PRICES.starter)}.
+    </>
+  ),
+};
+
+interface PricingSectionProps {
+  header?: PricingHeaderContent;
+  /** Label of the property-manager card button. */
+  propertyManagerLabel?: string;
+  /** Prefix for ids so pages that Next.js keeps mounted (hidden) do not share ids. */
+  idPrefix?: string;
+  /** Destination of the property-manager card button. */
+  propertyManagerHref?: string;
+  /** Show the "Coming soon" appliance tiles under the trust strip. */
+  showComingSoon?: boolean;
+  /** Show the owner-operated / insured trust strip under the plans. */
+  showTrustStrip?: boolean;
+}
+
+/** Header used on pages that present the three bundles on their own (pricing + appliance pages). */
+export function bundlePricingHeader(title: ReactNode, lede: ReactNode): PricingHeaderContent {
+  return {
+    eyebrow: "Three bundles",
+    eyebrowLong: " · One visit · Paid after cleaning",
+    title,
+    lede,
+  };
+}
+
+export function PricingSection({
+  header = HOME_PRICING_HEADER,
+  propertyManagerLabel = "Property managers →",
+  idPrefix = "",
+  propertyManagerHref = "/#managers",
+  showComingSoon = true,
+  showTrustStrip = true,
+}: PricingSectionProps) {
   return (
-    <section className="band" id="pricing" aria-labelledby="h-pricing">
+    <section className="band" id={`${idPrefix}pricing`} aria-labelledby={`${idPrefix}h-pricing`}>
       <div className="wrap">
         <SectionHeader
-          headingId="h-pricing"
-          eyebrow="Pricing"
-          eyebrowLong=" · Appliance deep cleaning, Austin, TX"
-          title={
-            <>
-              Simple, bundled pricing.{" "}
-              <span className="chip-lime">from {formatPrice(PRICES.starter)}</span>
-            </>
-          }
-          lede={
-            <>
-              Replacing a washer runs {SITE.replacementCost}. Purifying it starts at{" "}
-              {formatPrice(PRICES.starter)}.
-            </>
-          }
+          headingId={`${idPrefix}h-pricing`}
+          eyebrow={header.eyebrow}
+          eyebrowLong={header.eyebrowLong}
+          title={header.title}
+          lede={header.lede}
         />
 
         <div className="plans">
@@ -72,14 +117,14 @@ export function PricingSection() {
             strip={{
               icon: "★",
               content: (
-                <a href="#club">Join The Club and save {formatPrice(PRICES.clubSaving)} a visit</a>
+                <a href={`#${idPrefix}club`}>Join The Club and save {formatPrice(PRICES.clubSaving)} a visit</a>
               ),
             }}
           />
         </div>
 
         <div className="duo">
-          <div className="club rv" id="club">
+          <div className="club rv" id={`${idPrefix}club`}>
             <span className="badge">
               Members save {formatPrice(PRICES.clubSaving)} a visit · Best for families
             </span>
@@ -114,14 +159,14 @@ export function PricingSection() {
               <b>Property managers &amp; hosts</b>
               <p>Turnover and retention programs for apartments, rentals and Airbnbs.</p>
             </div>
-            <Link className="btn btn-ghost" href="/property-managers">
-              Property managers →
+            <Link className="btn btn-ghost" href={propertyManagerHref}>
+              {propertyManagerLabel}
             </Link>
           </div>
         </div>
 
-        <TrustStrip />
-        <ComingSoonRow />
+        {showTrustStrip && <TrustStrip />}
+        {showComingSoon && <ComingSoonRow />}
       </div>
     </section>
   );

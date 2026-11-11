@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { useBooking } from "@/components/booking/BookingProvider";
 import { NoticeOkIcon, NoticeWarnIcon } from "@/components/ui/Icons";
 import { BOOKING_API_CONNECTED } from "@/lib/config";
@@ -95,6 +95,7 @@ function NoticeBody({ notice }: { notice: ZipNotice }) {
 export function ZipStep() {
   const { state, zipCovered, zipRejected, goTo, zipFocusRequest } = useBooking();
   const [value, setValue] = useState(state.zip ?? "");
+  const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<number>(0);
 
@@ -136,12 +137,12 @@ export function ZipStep() {
       <h3>Where are we cleaning?</h3>
       <p className="sub">We&apos;ll confirm your area instantly.</p>
       <form className="bigzip" onSubmit={handleSubmit} noValidate>
-        <label className="sr" htmlFor="wZip">
+        <label className="sr" htmlFor={inputId}>
           Zip code
         </label>
         <input
           ref={inputRef}
-          id="wZip"
+          id={inputId}
           value={value}
           onChange={(event) => setValue(sanitizeZipInput(event.target.value))}
           inputMode="numeric"

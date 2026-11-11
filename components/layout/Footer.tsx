@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { SITE } from "@/lib/config";
-import { FOOTER_COLUMNS } from "@/lib/data/navigation";
+import { FOOTER_COLUMNS, FOOTER_COMPANY_LINKS } from "@/lib/data/navigation";
 
-export function Footer() {
+/** `minimal` hides the link columns and keeps only the legal row (ad landing page). */
+export function Footer({ minimal = false }: { minimal?: boolean }) {
   return (
-    <footer>
+    <footer className={minimal ? "footer-min" : undefined}>
       <div className="wrap">
         <div className="fgrid">
           {FOOTER_COLUMNS.map((column) => (
@@ -30,12 +31,11 @@ export function Footer() {
           <div>
             <h4>Company</h4>
             <ul>
-              <li>
-                <Link href="/our-story">Our story</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact</Link>
-              </li>
+              {FOOTER_COMPANY_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
               <li>
                 <a href={SITE.phoneHref}>{SITE.phoneDisplay}</a>
               </li>

@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
-import { FAQ_GROUPS } from "@/lib/data/faq";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
+import Link from "next/link";
+import type { FaqGroup } from "@/types";
 
 /**
  * Tabbed FAQ. Each question is a native <details>, which gives keyboard and
  * screen-reader behaviour for free; every group stays in the DOM (hidden) so
  * the answers remain crawlable.
  */
-export function FaqAccordion() {
+export function FaqAccordion({ groups }: { groups: FaqGroup[] }) {
+  const uid = useId();
   const [activeGroup, setActiveGroup] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -21,13 +23,13 @@ export function FaqAccordion() {
     const offset = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (!offset) return;
     event.preventDefault();
-    selectGroup((index + offset + FAQ_GROUPS.length) % FAQ_GROUPS.length, true);
+    selectGroup((index + offset + groups.length) % groups.length, true);
   };
 
   return (
     <div className="qa rv d1">
       <div className="qtabs" role="tablist" aria-label="Question groups">
-        {FAQ_GROUPS.map((group, index) => (
+        {groups.map((group, index) => (
           <button
             key={group.label}
             ref={(node) => {
@@ -35,9 +37,9 @@ export function FaqAccordion() {
             }}
             type="button"
             role="tab"
-            id={`faq-tab-${index}`}
+            id={`${uid}-tab-${index}`}
             aria-selected={activeGroup === index}
-            aria-controls={`faq-group-${index}`}
+            aria-controls={`${uid}-group-${index}`}
             tabIndex={activeGroup === index ? 0 : -1}
             onClick={() => selectGroup(index)}
             onKeyDown={(event) => onTabKeyDown(event, index)}
@@ -47,17 +49,17 @@ export function FaqAccordion() {
         ))}
       </div>
       <div className="qpanel">
-        {FAQ_GROUPS.map((group, index) => (
+        {groups.map((group, index) => (
           <div
             key={group.label}
             className="qgroup"
-            id={`faq-group-${index}`}
+            id={`${uid}-group-${index}`}
             role="tabpanel"
-            aria-labelledby={`faq-tab-${index}`}
+            aria-labelledby={`${uid}-tab-${index}`}
             hidden={activeGroup !== index}
           >
             {group.items.map((item) => (
-              <details key={item.question}>
+              <details key={item.question} open={item.open}>
                 <summary>
                   {item.question}
                   <i aria-hidden="true" />
@@ -67,7 +69,7 @@ export function FaqAccordion() {
                   {item.link && (
                     <>
                       {" "}
-                      <a href={item.link.href}>{item.link.text}</a>
+                      <Link href={item.link.href}>{item.link.text}</Link>
                       {item.link.after}
                     </>
                   )}

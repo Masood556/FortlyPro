@@ -1,5 +1,6 @@
 "use client";
 
+import { findVisibleById } from "@/lib/dom";
 import { prefersReducedMotion } from "@/lib/scroll";
 import { SERVICE_MAP_MARKUP, SERVICE_MAP_VIEW_BOX } from "@/lib/data/service-map-markup";
 
@@ -11,7 +12,7 @@ interface ServiceMapProps {
 /** Static service-area map. Clicking it jumps to the zip checker beside it. */
 export function ServiceMap({ zipInputId }: ServiceMapProps) {
   const focusZipField = () => {
-    const input = document.getElementById(zipInputId);
+    const input = findVisibleById<HTMLInputElement>(zipInputId);
     if (!input) return;
     input.focus({ preventScroll: true });
     input.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "center" });

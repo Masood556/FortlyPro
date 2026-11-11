@@ -86,8 +86,11 @@ export interface Review {
 }
 
 export interface GalleryPhoto {
-  src: string;
+  /** Missing until the real photo exists; a labelled placeholder is shown instead. */
+  src?: string;
   alt: string;
+  /** Placeholder label ("Photo: ...") used while `src` is missing. */
+  placeholder?: string;
   stage: "Before" | "Mid-clean";
   title: string;
   caption: string;
@@ -100,6 +103,8 @@ export interface GalleryGroup {
 
 export interface FaqItem {
   question: string;
+  /** Render expanded on first load. */
+  open?: boolean;
   answer: string;
   link?: { text: string; href: string; after?: string };
 }
@@ -112,4 +117,10 @@ export interface FaqGroup {
 export interface NavLink {
   label: string;
   href: string;
+}
+
+/** Quick-answer block under an appliance hero (answer-first SEO copy). */
+export interface QuickAnswer {
+  heading: string;
+  body: string;
 }

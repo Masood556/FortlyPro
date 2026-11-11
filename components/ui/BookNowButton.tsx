@@ -17,7 +17,7 @@ export function BookNowButton({
   tabIndex,
   onNavigate,
 }: BookNowButtonProps) {
-  const { openBooking } = useBooking();
+  const { openBooking, standalone, waitlistInputId } = useBooking();
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -26,7 +26,7 @@ export function BookNowButton({
   };
 
   return (
-    <a className={className} href="#book" tabIndex={tabIndex} onClick={handleClick}>
+    <a className={className} href={waitlistInputId ? `#${waitlistInputId}` : standalone ? "/#book" : "#book"} tabIndex={tabIndex} onClick={handleClick}>
       {children}
     </a>
   );

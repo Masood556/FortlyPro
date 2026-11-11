@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BookNowButton } from "@/components/ui/BookNowButton";
 import { useMenu } from "@/components/layout/MenuContext";
 import { ChatIcon, PhoneIcon } from "@/components/ui/Icons";
+import { findVisible } from "@/lib/dom";
 import { PRICES, SITE, formatPrice } from "@/lib/config";
 
 const SMS_BODY = "Hi FortlyPro, I have a question (from the website)";
@@ -20,7 +21,7 @@ export function MobileBookBar() {
 
   useEffect(() => {
     const update = () => {
-      const hero = document.querySelector<HTMLElement>(".hero");
+      const hero = findVisible(".hero");
       setPastHero(window.scrollY > (hero ? hero.offsetHeight * 0.55 : 400));
     };
     update();
@@ -35,8 +36,8 @@ export function MobileBookBar() {
       observer.observe(element);
       observers.push(observer);
     };
-    watch(document.getElementById("book"), setBookVisible);
-    watch(document.querySelector("footer"), setFooterVisible);
+    watch(findVisible("#book"), setBookVisible);
+    watch(findVisible("footer"), setFooterVisible);
 
     return () => {
       window.removeEventListener("scroll", update);

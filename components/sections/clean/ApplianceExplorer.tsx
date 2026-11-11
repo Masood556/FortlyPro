@@ -1,28 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { BookNowButton } from "@/components/ui/BookNowButton";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { ChevronRight } from "@/components/ui/Icons";
 import { APPLIANCE_DIAGRAMS } from "@/lib/data/appliance-diagrams";
-import { APPLIANCE_INFO, APPLIANCE_NAMES, GASKET_NOTE, TAB_ORDER } from "@/lib/data/appliances";
+import {
+  APPLIANCE_INFO,
+  APPLIANCE_NAMES,
+  appliancePath,
+  GASKET_NOTE,
+  TAB_ORDER,
+} from "@/lib/data/appliances";
 import type { ApplianceId } from "@/types";
 
-/** Renders `**bold**` segments as <b> without injecting HTML. */
-function Emphasis({ text }: { text: string }) {
-  return (
-    <>
-      {text.split("**").map((segment, index) =>
-        index % 2 === 1 ? <b key={index}>{segment}</b> : segment,
-      )}
-    </>
-  );
+interface ApplianceExplorerProps {
+  /**
+   * Show one appliance only (appliance pages): the tab control and the
+   * "more about" link are omitted. Without it, all four appliances are tabbed.
+   */
+  appliance?: ApplianceId;
 }
 
-export function ApplianceExplorer() {
-  const [selected, setSelected] = useState<ApplianceId>("washer");
+export function ApplianceExplorer({ appliance }: ApplianceExplorerProps) {
+  const uid = useId();
+  const panelId = `${uid}-panel`;
+  const [selected, setSelected] = useState<ApplianceId>(appliance ?? "washer");
   const [activePart, setActivePart] = useState<number | null>(null);
-  const tabRefs = useRef<Partial<Record<ApplianceId, HTMLButtonElement | null>>>({});
+  const tabRefs = useRef<
+    Partial<Record<ApplianceId, HTMLButtonElement | null>>
+  >({});
   const thumbRef = useRef<HTMLSpanElement>(null);
   const info = APPLIANCE_INFO[selected];
 
@@ -48,10 +56,14 @@ export function ApplianceExplorer() {
   };
 
   const onTabKeyDown = (event: KeyboardEvent, index: number) => {
-    const offset = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+    const offset =
+      event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (!offset) return;
     event.preventDefault();
-    select(TAB_ORDER[(index + offset + TAB_ORDER.length) % TAB_ORDER.length], true);
+    select(
+      TAB_ORDER[(index + offset + TAB_ORDER.length) % TAB_ORDER.length],
+      true,
+    );
   };
 
   const partHandlers = (index: number) => ({
@@ -63,31 +75,39 @@ export function ApplianceExplorer() {
 
   return (
     <>
-      <div className="seg-wrap rv">
-        <div className="seg" role="tablist" aria-label="Appliance">
-          <span className="thumb" ref={thumbRef} aria-hidden="true" />
-          {TAB_ORDER.map((id, index) => (
-            <button
-              key={id}
-              ref={(node) => {
-                tabRefs.current[id] = node;
-              }}
-              type="button"
-              role="tab"
-              id={`tab-${id}`}
-              aria-selected={selected === id}
-              aria-controls="panel"
-              tabIndex={selected === id ? 0 : -1}
-              onClick={() => select(id)}
-              onKeyDown={(event) => onTabKeyDown(event, index)}
-            >
-              {APPLIANCE_NAMES[id]}
-            </button>
-          ))}
+      {!appliance && (
+        <div className="seg-wrap rv">
+          <div className="seg" role="tablist" aria-label="Appliance">
+            <span className="thumb" ref={thumbRef} aria-hidden="true" />
+            {TAB_ORDER.map((id, index) => (
+              <button
+                key={id}
+                ref={(node) => {
+                  tabRefs.current[id] = node;
+                }}
+                type="button"
+                role="tab"
+                id={`${uid}-tab-${id}`}
+                aria-selected={selected === id}
+                aria-controls={panelId}
+                tabIndex={selected === id ? 0 : -1}
+                onClick={() => select(id)}
+                onKeyDown={(event) => onTabKeyDown(event, index)}
+              >
+                {APPLIANCE_NAMES[id]}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="panel rv" id="panel" role="tabpanel" aria-labelledby={`tab-${selected}`} aria-live="polite">
+      <div
+        className="panel rv"
+        id={panelId}
+        role="tabpanel"
+        aria-labelledby={appliance ? undefined : `${uid}-tab-${selected}`}
+        aria-live="polite"
+      >
         <div className="diag">
           <div className="hook">
             <p>
@@ -154,9 +174,12 @@ export function ApplianceExplorer() {
               </li>
             ))}
           </ol>
-          <Link className="link more hl" href={`/${info.slug}`}>
-            More about {info.title.toLowerCase()} purification <ChevronRight />
-          </Link>
+          {!appliance && (
+            <Link className="link more hl" href={appliancePath(info.slug)}>
+              More about {info.title.toLowerCase()} purification{" "}
+              <ChevronRight />
+            </Link>
+          )}
         </div>
       </div>
     </>

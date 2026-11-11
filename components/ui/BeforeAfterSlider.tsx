@@ -13,17 +13,19 @@ interface BeforeAfterSliderProps {
   before: ImageSource;
   after: ImageSource;
   caption?: string;
+  /** "hero" is the compact variant used inside a page hero. */
+  variant?: "results" | "hero";
 }
 
 /** Draggable, keyboard-accessible before/after image comparison. */
-export function BeforeAfterSlider({ before, after, caption }: BeforeAfterSliderProps) {
+export function BeforeAfterSlider({ before, after, caption, variant = "results" }: BeforeAfterSliderProps) {
   const { containerRef, position, dragging, dragged, handlers, onKeyDown } = useCompareSlider();
   const className = ["compare", dragging && "dragging", dragged && "dragged"]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className="compare-wrap rv results-compare">
+    <div className={variant === "hero" ? "compare-wrap rv hero-compare" : "compare-wrap rv results-compare"}>
       <div
         ref={containerRef}
         className={className}

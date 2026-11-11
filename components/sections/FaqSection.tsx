@@ -3,15 +3,23 @@ import { ChatIcon, MailIcon, PhoneIcon } from "@/components/ui/Icons";
 import { ChecklistCallout } from "@/components/ui/ChecklistCallout";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SITE } from "@/lib/config";
+import { FAQ_GROUPS } from "@/lib/data/faq";
+import type { FaqGroup } from "@/types";
 
 const FAQ_SMS_BODY = "Hi FortlyPro, I have a question (from the FAQ)";
 
-export function FaqSection() {
+interface FaqSectionProps {
+  title?: string;
+  groups?: FaqGroup[];
+  idPrefix?: string;
+}
+
+export function FaqSection({ title = "Questions, answered.", groups = FAQ_GROUPS, idPrefix = "" }: FaqSectionProps) {
   return (
-    <section className="band alt" id="faq" aria-labelledby="h-faq">
+    <section className="band alt" id={`${idPrefix}faq`} aria-labelledby={`${idPrefix}h-faq`}>
       <div className="wrap faq-one">
-        <SectionHeader headingId="h-faq" eyebrow="FAQ" title="Questions, answered." />
-        <FaqAccordion />
+        <SectionHeader headingId={`${idPrefix}h-faq`} eyebrow="FAQ" title={title} />
+        <FaqAccordion groups={groups} />
         <div className="faq-contact rv">
           <p className="anything">Anything else?</p>
           <div className="contact-row">

@@ -1552,3 +1552,232 @@ body.eng-on .fgrid a.later::after{content:" ⧗";color:#D9B100}
 .zipform input,.bigzip input{color:var(--ink)}
 /* Quote card: its tinted consent/email footer bleeds to the edges, so clip it to the rounded border. */
 .quote{overflow:hidden}
+
+/* ==========================================================
+   Pricing page (from FortlyPro_Pricing_v2.html)
+   ========================================================== */
+.hero-sub-page .hero-compare{max-width:none;margin:0}
+.hero-sub-page .hero-compare .compare{border:2px solid rgba(255,255,255,.75)}
+.hero-sub-page .hero-compare .caption{color:#D6E6FA;font-size:14px;margin-top:10px;text-align:center}
+.hero-sub-page .hero-sub .apps{font-size:15px;font-weight:400;color:#D6E6FA}
+.hero-sub-page .hero-sub .apps em{font-weight:600}
+@media (max-width:1000px){.hero-sub-page .hero-compare{max-width:560px;margin:0 auto}}
+
+.crumbs{background:var(--navy);font-size:12px;color:#BFD8F7;padding:8px 0;margin-top:56px;position:relative;z-index:1}
+.crumbs a{color:#fff;text-decoration:none}.crumbs span{color:#DEFF4F}
+.crumbs .wrap{padding-top:0;padding-bottom:0}
+.hero.hero-sub-page{padding-top:clamp(36px,5vw,64px)}
+@media (max-width:760px){.hero.hero-sub-page{padding-top:32px}}
+
+/* ==========================================================
+   Appliance pages / shared navigation (Next.js port)
+   ========================================================== */
+/* Active nav item */
+.nav ul a[aria-current="page"]{font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-color:var(--blue-brand)}
+.sheet a[aria-current="page"]{color:var(--blue)}
+/* Header holds six links: tighten spacing so it fits above the mobile breakpoint */
+.nav ul{gap:clamp(14px,1.8vw,24px)}
+/* Plain-text (non-link) footer rows read as secondary text */
+.fgrid li:not(:has(a)){color:var(--ink-4)}
+/* Placeholder tile for a gallery photo that has not been supplied yet */
+.ph-empty{background:#0B2A5C;display:flex;align-items:center;justify-content:center;text-align:center;color:#BFD8F7;font-size:13px;padding:16px}.ph-empty b{display:block;font-weight:600}
+/* Quick answer + related links under the appliance hero */
+.qa-band{padding:clamp(36px,4vw,56px) 0}
+.qanswer{max-width:760px;margin:0 auto;padding:22px 26px;border:var(--bd);border-radius:var(--r-lg);background:#fff}
+.qanswer .h2{font-size:clamp(20px,2vw,24px);margin:0 0 10px}
+.qanswer p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.related{max-width:760px;margin:14px auto 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--ink-4)}
+.related a{padding:6px 11px;border:1.5px solid var(--navy);border-radius:999px;color:var(--navy);font-weight:600;text-decoration:none;background:#fff}
+@media (max-width:760px){.qanswer{padding:16px;max-width:330px}.qanswer p{font-size:15px}.related{max-width:330px}}
+
+/* The FAQ band id is page-scoped on sub-pages, so style it by class too */
+.faq-one .midcap{margin-top:18px}
+
+/* Related pill whose destination is not built yet: same look as a link, not interactive */
+.related .pill-soon{padding:6px 11px;border:1.5px solid var(--navy);border-radius:999px;color:var(--navy);font-weight:600;background:#fff;cursor:default}
+
+/* ==========================================================
+   Location pages (from FortlyPro_Loc_*_v3.html)
+   ========================================================== */
+.localgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:start}
+@media (max-width:900px){.localgrid{grid-template-columns:1fr}}
+.locmap{padding:6px;background:#fff;border:var(--bd);border-radius:var(--r-lg)}
+.locmap svg{display:block;width:100%;height:auto;border-radius:12px}
+.maplegend{margin:8px 0 0;font-size:13px;color:var(--ink-3);text-align:center}
+.localgrid .related{margin:10px 0 0}
+.ct-lbl{margin:18px 0 6px}
+.waitcap{max-width:340px;margin:0 auto}
+.waitcap input{flex:1;min-width:0;width:auto}
+.consent.light{color:#BFD8F7;font-size:11px;margin:8px 0 0}
+@media (max-width:760px){.locmap{max-width:330px;margin:0 auto}.localgrid .related{max-width:330px}}
+
+/* ---------- Service-area dropdown (header) and grouped list (mobile sheet) ---------- */
+.nav ul .nav-area{position:relative}
+.nav ul .nav-trigger{display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:13px;letter-spacing:-.006em;color:#fff;background:none;border:0;padding:0;cursor:pointer}
+.nav.scrolled ul .nav-trigger,.nav.open ul .nav-trigger{color:var(--ink-2)}
+.nav ul .nav-trigger[aria-current="page"]{font-weight:600}
+.nav ul .nav-trigger svg{transition:transform .2s var(--ease)}
+.nav ul .nav-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
+.nav-menu{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:10px;width:max-content;min-width:300px;padding:16px 18px 12px;background:#fff;border:var(--bd);border-radius:var(--r-md);box-shadow:0 20px 50px -20px rgba(0,0,0,.35)}
+.nav-menu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.nav-menu[hidden]{display:none}
+.nav-menu-group p{margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-4)}
+.nav-menu-group+.nav-menu-group{margin-top:12px}
+.nav .nav-menu ul{display:block;margin:0;padding:0;list-style:none}
+.nav ul .nav-menu a{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 8px;margin:0 -8px;border-radius:8px;font-size:14px;color:var(--ink-2)}
+.nav ul .nav-menu a:hover{background:var(--bg-alt);color:var(--ink)}
+.nav ul .nav-menu a[aria-current="page"]{font-weight:600;color:var(--ink);text-decoration:none}
+.nav-menu small{font-size:11px;color:var(--ink-4)}
+.nav ul .nav-menu .nav-menu-all{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);border-radius:0;color:var(--blue);font-weight:500}
+.sheet .sheet-group{padding:2px 0 8px;border-bottom:1px solid var(--line)}
+.sheet .sheet-group p{margin:8px 0 0;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-4)}
+.sheet .sheet-group a{font-size:17px;font-weight:500;padding:8px 0 8px 12px;border-bottom:0}
+/* The mobile sheet now lists the locations too: let it scroll on short screens */
+.sheet{max-height:calc(100dvh - 56px);overflow-y:auto;overscroll-behavior:contain}
+
+/* Menu-only item (no link of its own) in the mobile sheet */
+.sheet .sheet-label{display:block;margin:0;padding:14px 0;font-size:24px;font-weight:600;letter-spacing:-.02em;color:var(--ink);border-bottom:1px solid var(--line)}
+
+/* ==========================================================
+   Audience pages (from FortlyPro_AirbnbHosts / PropertyManagers / Realtors)
+   ========================================================== */
+.photo-slot{background:linear-gradient(135deg,#0B2A5C,#061A3A)}
+.story-grid,.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:900px;margin:0 auto}
+@media (max-width:760px){.story-grid,.team-grid{grid-template-columns:1fr;max-width:330px}}
+.scard{background:#fff;border:var(--bd);border-radius:var(--r-lg);padding:18px 20px}
+.scard i{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-style:normal;font-weight:700;font-size:14px;margin-bottom:10px}
+.scard b{display:block;font-size:17px;color:var(--ink);margin-bottom:6px}
+.scard p{margin:0;font-size:15px;color:var(--ink-3);line-height:1.5}
+.story-promise .promgrid{grid-template-columns:1fr;max-width:560px}
+.ccards{display:grid;gap:10px}
+.ccard{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:14px;align-items:center;padding:14px 16px;border:1.5px solid rgba(255,255,255,.7);border-radius:16px;background:rgba(255,255,255,.09);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;text-decoration:none}
+.ccard:hover{background:rgba(255,255,255,.16);text-decoration:none}
+.ccard i{grid-row:1/3;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--navy);display:inline-flex;align-items:center;justify-content:center}
+.ccard i svg{width:20px;height:20px}
+.ccard b{font-size:17px}.ccard span{font-size:15px;color:#DEFF4F;font-weight:600;grid-column:2}
+.ccard small{grid-column:2;font-size:12px;color:#BFD8F7}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:40px;align-items:start}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.contact-trust{margin-top:18px}
+@media (max-width:760px){.contact-trust{display:block;max-width:330px;margin:14px auto 0}.ccards{max-width:330px;margin:0 auto}}
+.ct-lbl{margin:18px 0 6px}.ct-lbl a{color:var(--blue);text-transform:none;letter-spacing:0;font-weight:600}
+@media (max-width:760px){.ct-lbl,#managers .townline{max-width:330px;margin-left:auto;margin-right:auto}}
+.ftabs{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--navy);width:max-content;max-width:100%;margin:0 0 12px}
+.ftabs [role=tab]{border:0;background:transparent;color:#D6E6FA;font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer}
+.ftabs [role=tab][aria-selected="true"]{background:#fff;color:var(--navy)}
+.quote.partner .checks{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:14px;color:var(--ink-2)}
+.quote.partner .checks label{display:inline-flex;align-items:center;gap:6px;font-weight:500}
+.quote.partner .checks input{width:18px;height:18px;min-height:0;padding:0;border:1.5px solid var(--navy);border-radius:4px;accent-color:var(--navy)}
+.quote.partner select{height:44px;border:1.5px solid var(--navy);border-radius:12px;padding:0 12px;font:inherit;font-size:15px;background:#fff;width:100%}
+.quote.is-sent form,.quote.is-sent>h3,.quote.is-sent>.sub,.quote.is-sent>.consent{display:none}
+.quote.is-sent .sent{display:block}
+.perks{margin-top:16px}
+@media (max-width:760px){.ftabs{width:100%;max-width:330px;margin:0 auto 12px}.ftabs [role=tab]{flex:1;text-align:center;padding:8px 6px;font-size:12.5px}.perks{display:block;max-width:330px;margin:14px auto 0}}
+.hostbook{margin-top:16px}.hostbook .zipform{margin:0 0 10px}.hostbook .contact-row{margin-top:4px}
+@media (max-width:760px){.hostbook{max-width:330px;margin:14px auto 0}.hostbook .zipform{margin:0 auto 10px}.hostbook .contact-row{justify-content:center}}
+.quote.multi{background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;border-color:var(--navy)}
+.quote.multi .eyebrow{color:#DEFF4F;margin-bottom:6px}
+.quote.multi h3{color:#fff}.quote.multi .sub{color:#C9DDF6}
+.quote.multi .field label{color:#D6E6FA}
+.quote.multi .field input,.quote.multi .field select{background:#fff;border-color:rgba(255,255,255,.6);color:var(--ink)}
+.quote.multi .btn-primary{background:var(--lime);color:var(--ink)}
+.quote.multi .consent{background:rgba(255,255,255,.08);color:#BFD8F7;border-top:1px solid rgba(255,255,255,.2)}
+.quote.multi .alt{background:rgba(255,255,255,.08);color:#BFD8F7}
+.quote.multi .alt a{color:#DEFF4F}
+.quote.multi .sent h3{color:#fff}
+.contact-grid{column-gap:56px}
+
+/* Form grids: let the two columns shrink below the inputs' default width so fields never spill out of their card */
+@media (min-width:761px){.fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field{min-width:0}
+.field input,.field select{width:100%;min-width:0}
+/* Referral checkboxes: keep the check mark visible on the navy border style */
+.quote.partner .checks input{appearance:auto;-webkit-appearance:checkbox}
+
+/* Referral card: the consent strip is the last element, so let it sit flush on the card's bottom edge */
+.quote.partner{padding-bottom:0}
+.quote.partner > .consent{padding-bottom:14px;margin-bottom:0}
+.quote.partner.is-sent{padding-bottom:32px}
+
+/* ==========================================================
+   Trust & entity pages (Contact, Offers, Our Story, Reviews)
+   ========================================================== */
+.offer-card{position:relative;background:#fff;color:var(--ink);border:var(--bd);border-radius:var(--r-xl);padding:34px 28px 26px;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.offer-card .badge{position:absolute;top:-14px;left:24px;transform:none;background:var(--lime);border:var(--bd);font-size:13px;padding:6px 12px;border-radius:999px;font-weight:700;white-space:nowrap}
+.offer-card>b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em}
+.offer-card .csub{display:block;font-size:16px;font-weight:600;margin:4px 0 10px;padding-bottom:10px;border-bottom:1px solid rgba(6,26,58,.3)}
+.offer-card .cprice{display:flex;align-items:baseline;gap:8px;margin:6px 0 12px}
+.offer-card .cprice s{font-size:17px;color:var(--ink-4)}.offer-card .cprice b{font-size:44px;font-weight:700;letter-spacing:-.04em}.offer-card .cprice span{font-size:15px;color:var(--ink-3)}
+.offer-card ul{list-style:none;margin:0 0 18px;padding:0}
+.offer-card li{padding:8px 0;border-top:1px solid var(--line);font-size:15px}
+.offer-card li::before{content:"✓ ";color:var(--blue);font-weight:700}
+.offer-card .btn{width:100%}
+@media (max-width:760px){.offer-card{max-width:330px;margin:0 auto;padding:30px 18px 18px}.offer-card .badge{font-size:12px;left:50%;transform:translateX(-50%)}.offer-card .cprice b{font-size:36px}}
+.hero-compare{max-width:none;margin:0}
+.hero-compare .compare{border:2px solid rgba(255,255,255,.75)}
+.hero-compare .caption{color:#D6E6FA;font-size:14px;margin-top:10px;text-align:center}
+.gbadge.dark{margin:14px auto 0;border:var(--bd);color:var(--ink)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1000px;margin:24px auto 0}
+.rgrid{align-items:start}
+.rgrid .review{height:auto;background:#fff;border:var(--bd);border-radius:var(--r-lg);padding:18px 18px 16px;color:var(--ink)}
+.rgrid .review q{color:var(--ink);font-size:15px;line-height:1.4}
+.rgrid .review .stars{color:#FFC83D}
+.rgrid .who{color:var(--ink-3);font-size:13px;margin-top:14px}
+.rgrid .who i{background:var(--blue-tint);color:var(--blue)}
+.rgrid .who span{display:flex;flex-direction:column;line-height:1.2}
+.rgrid .who small{font-size:12px;color:var(--ink-4)}
+#reviews .reviews-foot{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+@media (max-width:1000px){.rgrid{grid-template-columns:1fr 1fr;max-width:560px}}
+@media (max-width:760px){.rgrid{grid-template-columns:1fr;max-width:330px}}
+
+/* Reviews page grid: every card in a row is the same height, with the reviewer line pinned to the bottom */
+.rgrid{align-items:stretch}
+.rgrid .review{height:100%;display:flex;flex-direction:column;align-self:stretch}
+.rgrid .review .who{margin-top:auto;padding-top:14px}
+
+/* ==========================================================
+   Book Cleaning ad landing page (FortlyPro_BookCleaning_v2.html)
+   ========================================================== */
+.footer-min .fgrid{display:none}
+.trustband{padding:18px 0;background:#fff;border-bottom:1px solid var(--line)}
+.trustchips.big{margin:0 auto;max-width:1000px}
+.trustchips.big li{font-size:14px;padding:8px 14px}
+.pgrid.two{grid-template-columns:1fr 1fr;max-width:860px;margin:0 auto}
+@media (max-width:760px){.pgrid.two{display:grid;grid-template-columns:1fr;max-width:330px;overflow:visible}.pgrid.two .shot{width:100%;flex:none}}
+.story-card.short{max-width:760px;margin:0 auto;text-align:left}
+.story-card.short .h2{margin:4px 0 10px}
+.story-card.short .story{margin:0 0 16px}
+.trustband .wrap{padding-top:0;padding-bottom:0}
+
+/* ==========================================================
+   Change list v4.0 follow-ups
+   ========================================================== */
+/* FP-06: the three bundle cards (and their buttons) are exactly the same width: long content in one card can't widen its column */
+@media (min-width:1001px){.plans{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.plan{min-width:0}
+/* FP-21: the four appliance names pop (bold, ~1.12x, brand accent); connecting words stay subordinate */
+.hero-card .apps{color:rgba(255,255,255,.78)}
+.hero-card .apps em{color:var(--lime);font-weight:700;font-size:1.12em;font-style:normal}
+/* FP-25: select options stay on a single line */
+.field select{white-space:nowrap;text-overflow:ellipsis}
+.field select option{white-space:nowrap}
+
+/* Review cards everywhere (home, location, audience, appliance, trust pages): equal height per row, reviewer line pinned to the bottom */
+.reviews,.band.deep .reviews{align-items:stretch}
+.review,.band.deep .review{height:auto;align-self:stretch;display:flex;flex-direction:column}
+.review .who,.band.deep .who{margin-top:auto;padding-top:14px}
+
+/* FAQ polish */
+/* the open row's tint and blue bar are clipped to the card's rounded corners */
+.qpanel{overflow:hidden}
+/* plus / minus: short centred strokes inside the circle (not touching its edge), white on the filled open state */
+.qa .qpanel summary i::before,.qa .qpanel summary i::after{left:50%;top:50%;width:10px;margin:-.75px 0 0 -5px}
+.qa details[open] summary i::before,.qa details[open] summary i::after{background:#fff}
+/* a little air between the question and its answer */
+.qa .qpanel .ans{padding-top:4px}
+/* keyboard focus stays visible but sits inside the row instead of spilling over the card edge */
+.qa summary:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;border-radius:8px}
+
+/* "Text me the checklist" pill: the input fills the pill so the button sits flush at the right edge (no dead space) */
+.midcap-f input{flex:1 1 auto;width:auto;min-width:0}
+.midcap-f .btn{flex:none}
