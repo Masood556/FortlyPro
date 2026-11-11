@@ -45,12 +45,12 @@ export function HeroSection({
           {card && (
             <div className="hero-card rv d2">
               <p className="hero-cat">{card.category}</p>
-              <p className="hero-sub">
+              <p className="hero-sub ">
                 <span className="apps">
                   {card.apps.map((app, index) => (
-                    <span key={app}>
+                    <span key={app} >
                       {index > 0 && " · "}
-                      <em>{app}</em>
+                      <em className="text-white!">{app}</em>
                     </span>
                   ))}
                 </span>
