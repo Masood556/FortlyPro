@@ -1781,3 +1781,19 @@ body.eng-on .fgrid a.later::after{content:" ⧗";color:#D9B100}
 /* "Text me the checklist" pill: the input fills the pill so the button sits flush at the right edge (no dead space) */
 .midcap-f input{flex:1 1 auto;width:auto;min-width:0}
 .midcap-f .btn{flex:none}
+
+/* Header hover states.
+   On the dark hero the links were turning dark ink on navy (invisible) when hovered: keep them light and underline them.
+   On the solid white header they darken and underline in blue. The logo gets the same underline. */
+.nav .wrap > ul > li > a,.nav .wrap > ul > li > .nav-trigger,.nav .tel{text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:2px;text-underline-offset:6px;transition:text-decoration-color .2s var(--ease),color .2s var(--ease)}
+.nav .wrap > ul > li > a:hover,.nav .wrap > ul > li > .nav-trigger:hover,.nav .tel:hover{color:#fff;text-decoration-color:var(--lime)}
+.nav.scrolled .wrap > ul > li > a:hover,.nav.scrolled .wrap > ul > li > .nav-trigger:hover,.nav.scrolled .tel:hover,
+.nav.open .wrap > ul > li > a:hover,.nav.open .wrap > ul > li > .nav-trigger:hover,.nav.open .tel:hover{color:var(--ink);text-decoration-color:var(--blue-brand)}
+.nav .logo{position:relative}
+.nav .logo::after{content:"";position:absolute;left:0;right:0;bottom:15px;height:2px;border-radius:2px;background:var(--lime);transform:scaleX(0);transform-origin:left center;transition:transform .25s var(--ease)}
+.nav.scrolled .logo::after,.nav.open .logo::after{background:var(--blue-brand)}
+.nav .logo:hover::after,.nav .logo:focus-visible::after{transform:scaleX(1)}
+
+/* Logo hover: no browser-default text underline (it split into two colours); one clean bar under the whole "FortlyPro" wordmark */
+.nav .logo,.nav .logo:hover,.nav .logo .wordmark{text-decoration:none}
+.nav .logo::after{bottom:10px;left:0;right:0;height:2.5px}
